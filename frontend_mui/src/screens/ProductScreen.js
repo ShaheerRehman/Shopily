@@ -1,7 +1,6 @@
 import Rating from "../components/Rating";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProduct } from "../redux/reducers/ducks/ProductDuck";
 import Typography from "@mui/material/Typography";
@@ -23,13 +22,15 @@ function ProductScreen() {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [qty, setQty] = useState(1);
-
   const { product, loading, error } = useSelector((state) => ({
     product: state.product.product,
     loading: state.product.loading,
     error: state.product.error,
   }));
+  if (!product) {
+    dispatch(fetchProduct(params.id));
+  }
+  const [qty, setQty] = useState(1);
 
   const handleCartClick = () => {
     navigate(`/cart/${params.id}?qty=${qty}`);
@@ -37,7 +38,7 @@ function ProductScreen() {
 
   useEffect(() => {
     dispatch(fetchProduct(params.id));
-  }, [dispatch]);
+  }, [params.id, dispatch]);
   return (
     <>
       {loading ? (

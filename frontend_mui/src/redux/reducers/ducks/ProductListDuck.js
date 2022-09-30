@@ -9,7 +9,6 @@ const INITIAL_STATE = {
 
 const fetchProducts = createAsyncThunk("fetchProducts", async () => {
   const res = await axios.get("/api/products/");
-  console.log(res.data);
   return res.data;
 });
 

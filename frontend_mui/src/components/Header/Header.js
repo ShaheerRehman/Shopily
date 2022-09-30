@@ -14,6 +14,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,6 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const cart = useSelector((state) => state.CartAddItem.cartItems);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -124,7 +126,7 @@ export default function PrimarySearchAppBar() {
           aria-label="show 3 items in cart"
           color="inherit"
         >
-          <Badge badgeContent={3} color="error">
+          <Badge badgeContent={cart.length} color="error">
             <ShoppingCartRoundedIcon />
           </Badge>
         </IconButton>
@@ -181,7 +183,7 @@ export default function PrimarySearchAppBar() {
               aria-label="show 3 items in cart"
               color="inherit"
             >
-              <Badge badgeContent={3} color="error">
+              <Badge badgeContent={cart.length} color="error">
                 <ShoppingCartRoundedIcon />
               </Badge>
             </IconButton>
