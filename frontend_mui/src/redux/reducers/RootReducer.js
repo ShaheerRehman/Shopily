@@ -1,12 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import productList from "./ducks/ProductListDuck";
 import product from "./ducks/ProductDuck";
-import CartAddItem from "./ducks/CartAddItemDuck";
+import Cart from "./ducks/CartDuck";
 
 const reducers = {
   productList,
   product,
-  CartAddItem,
+  Cart,
 };
 
 export default combineReducers(reducers);

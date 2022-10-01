@@ -4,7 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { useDispatch } from "react-redux";
-import { fetchItemToAdd } from "../redux/reducers/ducks/CartAddItemDuck";
+import { fetchItemToAdd } from "../redux/reducers/ducks/CartDuck";
 
 export default function BasicMenuRedux({ id, qty, countInStock }) {
   const [anchorEl, setAnchorEl] = React.useState(null);

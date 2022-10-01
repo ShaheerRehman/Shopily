@@ -25,12 +25,23 @@ const fetchItemToAdd = createAsyncThunk(
     });
     localStorage.setItem(
       "cartItems",
-      JSON.stringify(thunkAPI.getState().CartAddItem.cartItems)
+      JSON.stringify(thunkAPI.getState().Cart.cartItems)
     );
   }
 );
 
-const addToCartSlice = createSlice({
+const removeFromCart = createAsyncThunk("removeProduct", (id, thunkAPI) => {
+  thunkAPI.dispatch({
+    type: CART_REMOVE_ITEM,
+    payload: id,
+  });
+  localStorage.setItem(
+    "cartItems",
+    JSON.stringify(thunkAPI.getState().Cart.cartItems)
+  );
+});
+
+const CartSlice = createSlice({
   name: "addToCart",
   initialState: INITIAL_STATE,
   reducers: {
@@ -51,9 +62,17 @@ const addToCartSlice = createSlice({
         localStorage.setItem("cartItems", state.cartItems);
       }
     },
+    CART_REMOVE_ITEM(state, { payload }) {
+      return {
+        ...state,
+        cartItems: _.cloneDeep(state.cartItems).filter(
+          (i) => i.product !== payload
+        ),
+      };
+    },
   },
 });
 
-export const { CART_ADD_ITEM } = addToCartSlice.actions;
-export { fetchItemToAdd };
-export default addToCartSlice.reducer;
+export const { CART_ADD_ITEM, CART_REMOVE_ITEM } = CartSlice.actions;
+export { fetchItemToAdd, removeFromCart };
+export default CartSlice.reducer;

@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchItemToAdd } from "../redux/reducers/ducks/CartAddItemDuck";
+import {
+  fetchItemToAdd,
+  removeFromCart,
+} from "../redux/reducers/ducks/CartDuck";
 import {
   Alert,
   Grid,
@@ -26,7 +29,7 @@ function CartScreen() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.CartAddItem.cartItems);
+  const cart = useSelector((state) => state.Cart.cartItems);
   useEffect(() => {
     if (productId) {
       dispatch(fetchItemToAdd({ id: productId, qty }));
@@ -48,17 +51,17 @@ function CartScreen() {
         </Alert>
       ) : (
         <Grid container mt={4}>
-          <Grid item xs={8}>
+          <Grid item xs={12} md={8}>
             {cart.map((item) => (
-              <Grid container spacing={2} mb={1}>
-                <Grid item xs={2}>
+              <Grid key={item.product} container spacing={2} mb={1}>
+                <Grid item md={2} sx={{ display: { xs: "none", md: "block" } }}>
                   <CardMedia
                     component="img"
                     alt={item.name}
                     image={item.image}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6} md={4}>
                   <Typography
                     variant="body2"
                     color="initial"
@@ -83,14 +86,19 @@ function CartScreen() {
                   )}
                 </Grid>
                 <Grid item xs={2}>
-                  <Button color="error">
+                  <Button
+                    color="error"
+                    onClick={() => {
+                      dispatch(removeFromCart(item.product));
+                    }}
+                  >
                     <DeleteForeverRoundedIcon />
                   </Button>
                 </Grid>
               </Grid>
             ))}
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <Card variant="outlined">
               <CardContent>
                 <Box
