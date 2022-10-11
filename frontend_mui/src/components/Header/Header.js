@@ -13,8 +13,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
+import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
+import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/reducers/ducks/UserDuck";
+import { useNavigate } from "react-router-dom";
+import { Divider } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -57,16 +63,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.Cart.cartItems);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -80,8 +83,127 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+  const { isAuthenticated, user } = useSelector((state) => state.User);
   const menuId = "primary-search-account-menu";
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+    setMobileMoreAnchorEl(null);
+  };
+  const authLinks = (
+    <>
+      <Divider orientation="vertical" flexItem />
+      <IconButton
+        size="small"
+        aria-label="account of current user"
+        aria-haspopup="true"
+        color="inherit"
+      >
+        <AccountCircle />
+        {isAuthenticated && user !== null ? user.first_name : null}
+      </IconButton>
+      <Divider orientation="vertical" flexItem />
+
+      <IconButton
+        size="small"
+        onClick={handleLogout}
+        edge="end"
+        aria-label="logout"
+        aria-haspopup="true"
+        color="inherit"
+      >
+        <LogoutRoundedIcon />
+      </IconButton>
+    </>
+  );
+  const guestLinks = (
+    <>
+      <Divider orientation="vertical" flexItem />
+
+      <IconButton
+        onClick={handleMobileMenuClose}
+        component={Link}
+        to="/register"
+        size="small"
+        aria-label="account of current user"
+        aria-haspopup="true"
+        color="inherit"
+      >
+        <HowToRegRoundedIcon />
+        Register
+      </IconButton>
+      <Divider orientation="vertical" flexItem />
+
+      <IconButton
+        size="small"
+        component={Link}
+        to="/login"
+        edge="end"
+        aria-label="logout"
+        aria-haspopup="true"
+        color="inherit"
+      >
+        <LoginRoundedIcon />
+      </IconButton>
+    </>
+  );
+  const authLinksMobile = (
+    <>
+      <MenuItem onClick={handleMobileMenuClose} component={Link} to="#">
+        <IconButton
+          size="small"
+          aria-label="account of current user"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        {isAuthenticated && user !== null ? user.first_name : null}
+      </MenuItem>
+      <MenuItem
+        onClick={(handleMobileMenuClose, handleLogout)}
+        component={Link}
+        to="#"
+      >
+        <IconButton
+          size="small"
+          aria-label="logout"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <LogoutRoundedIcon />
+        </IconButton>
+        <p>Logout</p>
+      </MenuItem>
+    </>
+  );
+  const guestLinksMobile = (
+    <>
+      <MenuItem onClick={handleMobileMenuClose} component={Link} to="/register">
+        <IconButton
+          size="small"
+          aria-label="account of current user"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <HowToRegRoundedIcon />
+        </IconButton>
+        <p>Register</p>
+      </MenuItem>
+
+      <MenuItem onClick={handleMobileMenuClose} component={Link} to="/login">
+        <IconButton
+          size="small"
+          aria-label="logout"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <LoginRoundedIcon />
+        </IconButton>
+        <p>Login</p>
+      </MenuItem>
+    </>
+  );
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -132,18 +254,7 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {isAuthenticated ? authLinksMobile : guestLinksMobile}
     </Menu>
   );
 
@@ -187,17 +298,7 @@ export default function PrimarySearchAppBar() {
                 <ShoppingCartRoundedIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {isAuthenticated ? authLinks : guestLinks}
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton

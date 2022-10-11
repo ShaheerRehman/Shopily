@@ -3,11 +3,13 @@ import Header from "./components/Header/Header";
 import HomeScreen from "./screens/HomeScreen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProductScreen from "./screens/ProductScreen";
-import { Container } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { Provider } from "react-redux";
-import store from "./store";
 import CartScreen from "./screens/CartScreen";
+import Register from "./screens/RegisterScreen";
+import Login from "./screens/LoginScreen";
+import { checkAuth } from "./redux/reducers/ducks/UserDuck";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const theme = createTheme({
   palette: {
@@ -18,23 +20,25 @@ const theme = createTheme({
 });
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, []);
   return (
     <>
       <BrowserRouter>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <Header />
-            <Container sx={{ minHeight: "80vh" }}>
-              <Routes>
-                <Route path="/" element={<HomeScreen />} />
-                <Route path="/product/:id" element={<ProductScreen />} />
-                <Route path="/cart" element={<CartScreen />} />
-                <Route path="/cart/:id" element={<CartScreen />} />
-              </Routes>
-            </Container>
-            <Footer />
-          </ThemeProvider>
-        </Provider>
+        <ThemeProvider theme={theme}>
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/product/:id" element={<ProductScreen />} />
+            <Route path="/cart" element={<CartScreen />} />
+            <Route path="/cart/:id" element={<CartScreen />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+          <Footer />
+        </ThemeProvider>
       </BrowserRouter>
     </>
   );

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "../redux/reducers/ducks/ProductListDuck";
 import { useSelector } from "react-redux";
+import Layout from "../Layout";
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ function HomeScreen() {
     dispatch(fetchProducts());
   }, [dispatch]);
   return (
-    <>
+    <Layout title="Shopily" content="Homepage">
       <Typography variant="h4" gutterBottom color="initial">
         Latest Products
       </Typography>
@@ -41,7 +42,7 @@ function HomeScreen() {
           ))}
         </Grid>
       )}
-    </>
+    </Layout>
   );
 }
 

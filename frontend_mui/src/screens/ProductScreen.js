@@ -17,6 +17,7 @@ import {
 import { Box } from "@mui/system";
 import BasicMenu from "../components/Menu";
 import { useNavigate } from "react-router-dom";
+import Layout from "../Layout";
 
 function ProductScreen() {
   const params = useParams();
@@ -40,7 +41,7 @@ function ProductScreen() {
     dispatch(fetchProduct(params.id));
   }, [params.id, dispatch]);
   return (
-    <>
+    <Layout title={product.name} content="Product Page">
       {loading ? (
         <LinearProgress />
       ) : error ? (
@@ -131,7 +132,7 @@ function ProductScreen() {
           </Grid>
         </Grid>
       )}
-    </>
+    </Layout>
   );
 }
 

@@ -20,6 +20,7 @@ import {
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import BasicMenuRedux from "../components/MenuRedux";
 import { useNavigate } from "react-router-dom";
+import Layout from "../Layout";
 
 function CartScreen() {
   const [searchParams] = useSearchParams();
@@ -41,7 +42,7 @@ function CartScreen() {
   };
 
   return (
-    <>
+    <Layout title="Cart" content="Cart">
       <Typography variant="h4" gutterBottom color="initial">
         Shopping Cart
       </Typography>
@@ -153,7 +154,7 @@ function CartScreen() {
           </Grid>
         </Grid>
       )}
-    </>
+    </Layout>
   );
 }
 
