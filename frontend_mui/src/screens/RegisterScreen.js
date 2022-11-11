@@ -5,6 +5,7 @@ import Layout from "../Layout";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { register } from "../redux/reducers/ducks/UserDuck";
+import { ToastContainer } from "react-toastify";
 
 function Register() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function Register() {
   if (registered) return <Navigate to="/login" />;
   return (
     <Layout title="Register" content="register">
+      <ToastContainer />
       <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={12} sm={6}>
           <Typography variant="h4" color="initial">

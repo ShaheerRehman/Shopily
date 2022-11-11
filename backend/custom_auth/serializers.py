@@ -33,6 +33,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    isAdmin = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('first_name', 'last_name', 'email', 'isAdmin')
+
+    def get_isAdmin(self, obj):
+        return obj.is_staff

@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const initialState = {
   isAuthenticated: false,
@@ -153,11 +155,20 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(register.fulfilled, (state) => {
+        toast.success("Account created successfully. Login to continue");
         state.loading = false;
         state.registered = true;
       })
-      .addCase(register.rejected, (state) => {
+      .addCase(register.rejected, (state, action) => {
         state.loading = false;
+        // toast.error(action.payload);
+        if (action.payload.email) {
+          toast.error(action.payload.email[0]);
+        } else if (action.payload.password) {
+          toast.error(action.payload.password[0]);
+        } else {
+          toast.error("Error, provide correct data");
+        }
       })
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -166,8 +177,9 @@ const userSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.loading = false;
+        toast.error(action.payload.Invalid);
       })
       .addCase(getUser.pending, (state) => {
         state.loading = true;
@@ -198,6 +210,7 @@ const userSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.loading = false;
+        toast.success("Logged out");
       })
       .addCase(logout.rejected, (state) => {
         state.loading = false;

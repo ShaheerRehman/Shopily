@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'custom_auth.apps.CustomAuthConfig',
     'rest_framework_simplejwt',
+    'app_users.apps.AppUsersConfig',
+    'orders.apps.OrdersConfig',
+    'products.apps.ProductsConfig',
 ]
 
 MIDDLEWARE = [

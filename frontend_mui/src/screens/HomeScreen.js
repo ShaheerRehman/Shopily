@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { fetchProducts } from "../redux/reducers/ducks/ProductListDuck";
 import { useSelector } from "react-redux";
 import Layout from "../Layout";
+import { ToastContainer } from "react-toastify";
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ function HomeScreen() {
   }, [dispatch]);
   return (
     <Layout title="Shopily" content="Homepage">
+      <ToastContainer />
+
       <Typography variant="h4" gutterBottom color="initial">
         Latest Products
       </Typography>
